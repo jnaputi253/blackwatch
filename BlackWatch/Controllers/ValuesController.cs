@@ -1,44 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Amazon.S3;
+using Amazon.S3.Model;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace BlackWatch.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class ValuesController : Controller
     {
-        // GET api/values
+        private readonly IAmazonS3 _s3Client;
+
+        public ValuesController(IAmazonS3 s3Client)
+        {
+            _s3Client = s3Client;
+        }
+
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<ListBucketsResponse> Buckets()
         {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return await _s3Client.ListBucketsAsync();
         }
     }
 }
