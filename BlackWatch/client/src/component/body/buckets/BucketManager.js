@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import FetchingBuckets from './FetchingBuckets'
 import NoBuckets from './NoBuckets'
 import BucketList from './BucketList'
+import AddBucketButton from './AddBucketButton'
 
 export default class BucketManager extends Component {
 
@@ -31,25 +33,24 @@ export default class BucketManager extends Component {
             .catch(error => console.log(error))
     }
 
-    // TODO: send this down to <BucketList />
     onAddClicked = () => {
         alert('Add button pressed')
     }
 
-    // TODO: send this down to <BucketList />
-    onDeleteClicked = () => {
-        alert('Delete button pressed')
-    }
-
     render = () => {
         if (this.state.isLoading) {
-            return <h1>Fetching buckets</h1>
+            return <FetchingBuckets />
         }
 
-        console.log(this.state.buckets)
+        if (this.state.buckets.length === 0) {
+            return <NoBuckets />
+        }
 
-        return this.state.buckets.length === 0
-            ? <NoBuckets />
-            : <BucketList buckets={this.state.buckets} />
+        return (
+            <div id='bucketSection'>
+                <AddBucketButton onAddClicked={this.onAddClicked} />
+                <BucketList buckets={this.state.buckets} />
+            </div>
+        )
     }
 }

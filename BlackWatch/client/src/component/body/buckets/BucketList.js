@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Bucket from './Bucket'
+import './bucketListStyles.css'
 
 export default class BucketList extends Component {
 
